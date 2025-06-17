@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  minio:
+    image: minio/minio:latest
+    environment:
+      - MINIO_KMS_PROVIDER=vault
+      - MINIO_KMS_VAULT_ENDPOINT=${url_vault}
+      - MINIO_KMS_VAULT_AUTH_TOKEN=${vault_auth_token}
+      - MINIO_KMS_VAULT_KEY_NAME=my-minio-key
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+
+    command: server /data --console-address ":9090"
+
+    volumes:
+      - minio_data:/data
+
+volumes:
+  minio_data:
